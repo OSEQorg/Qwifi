@@ -118,7 +118,8 @@ sudo systemctl start dnsmasq
 sudo apt-get install -y nginx
 sudo systemctl enable nginx
 sudo systemctl start nginx
-sudo ln -sf /var/www/html /www
+sudo rm /var/www/html/index.nginx-debian.html
+sudo sed -i '0,/try_files.*$/s//&\nautoindex on;/' /etc/nginx/sites-enabled/default
 ```
 
 Nginx logs can quickly flood the filesystem, that is why we first need to
@@ -191,21 +192,3 @@ sudo systemctl enable regenerate_ssh_host_keys
 # TODO: create image
 
 ...
-
-
-# First boot of image
-
-# Expand filesystem
-
-```bash
-sudo raspi-config nonint do_expand_rootfs
-```
-
-# Make it read only
-
-Enhance the life of your USB stick or SD card.
-
-```bash
-sudo raspi-config nonint enable_bootro
-sudo raspi-config nonint enable_overlayfs
-```
