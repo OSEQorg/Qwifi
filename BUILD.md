@@ -238,5 +238,18 @@ the above command.
 
 ```bash
 sudo dd if=/dev/sda of=qwifi.img bs=1M count=2400
-gzip -k qwifi.img
 ```
+
+## Release
+
+Compress the image file and give it a proper name:
+
+```bash
+gzip -c qwifi.img > qwifi_$(date +%Y-%m-%d).img.gz
+```
+
+[Create a new release on Github](https://github.com/Audiopedia/qwifi/releases/new)
+- Use the date as tag, for example: `2021-08-16`
+- Release title also includes the date, for example: `qwifi_2021-08-16`
+- Attach the compressed file
+- Publish the release
