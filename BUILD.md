@@ -1,11 +1,17 @@
 # Instructions for building an image
 
-# Download and flash image
+## Requirements
+
+- Linux PC
+- Ethernet switch between Pi and PC
+- Phone or laptop to test end result
+
+## Download and flash image
 
 - Download a Raspbian image and flash it to a USB stick
 - Mount the boot partition, and create an empty file named `ssh` on it.
 
-## Disable resize-on-first-boot
+### Disable resize-on-first-boot
 
 Raspbian resizes the root partition to fit the entire medium on the first
 boot. We don't want that now, because the image needs to be as small as
@@ -18,13 +24,13 @@ first boot will be setup again when the image build is finished.
 - Mount the root partition and move the file `etc/init.d/resize2fs_once` to `home/pi`.
 - Remove the symlink `etc/rc3.d/S01resize2fs_once`.
 
-# First boot
+## First boot
 
 - Boot the Pi with the USB stick
 - Connect to pi@raspberrypi. If this doesn't work you need to log in to your
   router and find out what the IP address of the Pi is.
 
-## Resize root partition
+### Resize root partition
 
 ``` bash
 sudo fdisk /dev/sda
@@ -33,7 +39,8 @@ d # delete
 2 # 2nd partition
 n # create new partition
 p # primary
-# keep the first sector from the listing
+
+## Download and flash image# keep the first sector from the listing
 +2G # resize partition to 2GiB
 n # don't remove Ext4 signature
 wq # write and save
@@ -42,7 +49,7 @@ wq # write and save
 sudo resize2fs /dev/sda2
 ```
 
-# Update packages
+## Update packages
 
 First update all system packages, this ensures the latest security updates are present.
 
@@ -52,7 +59,7 @@ sudo apt-get dist-upgrade -y
 sudo reboot
 ```
 
-# WiFi hotspot
+## WiFi hotspot
 
 Sets up a WiFi hotspot with the SSID `qwifi` without a password.
 
@@ -81,7 +88,7 @@ sudo systemctl enable hostapd
 sudo systemctl start hostapd
 ```
 
-# Routing
+## Routing
 
 This is only necessary when you have a public Internet connection on eth0 and
 want to share that via WiFi.
@@ -94,7 +101,7 @@ sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 sudo netfilter-persistent save
 ```
 
-# DHCP and DNS server
+## DHCP and DNS server
 
 ```bash
 cat <<EOF | sudo tee -a /etc/dhcpcd.conf
@@ -121,7 +128,7 @@ sudo systemctl enable dnsmasq
 sudo systemctl start dnsmasq
 ```
 
-# Web server
+## Web server
 
 ```bash
 sudo apt-get install -y nginx
@@ -141,7 +148,7 @@ error_log off;
 EOF
 ```
 
-# Dynamic site configuration
+## Dynamic site configuration
 
 Copy the file `discover-sites.sh` from your host to the Pi.
 ```bash
@@ -176,7 +183,7 @@ EOF
 sudo systemctl enable discover-sites
 ```
 
-# Testing
+## Testing
 
 Reboot to make all changes effective.
 
@@ -188,7 +195,7 @@ Test if the WiFi hotspot works. You should be able to connect to the `qwifi`
 SSID without password. When you navigate to `http://qwifi.lan` you should see a
 empty directory listing.
 
-# Restore resize-on-first-boot
+## Restore resize-on-first-boot
 
 Edit `/boot/cmdline.txt` and append `init=/usr/lib/raspi-config/init_resize.sh`
 to the first line (make sure there is a space before "init").
@@ -199,7 +206,7 @@ cd /etc/rc3.d
 sudo ln -sf ../init.d/resize2fs_once S01resize2fs_once
 ```
 
-# Cleanup
+## Cleanup
 
 ```bash
 sudo apt-get clean
@@ -209,7 +216,7 @@ sudo truncate -s 0 /etc/machine-id
 sudo systemctl enable regenerate_ssh_host_keys
 ```
 
-# Baking the image
+## Baking the image
 
 Power off the pi:
 

@@ -29,8 +29,8 @@
 
 - Put the USB stick or SD card in a Raspberry Pi.
 - Connect a Ethernet cable to the Pi and your local network. Ethernet is only
-  required for the first boot, after that you can remove it. **You can keep it and
-  share the internet via the Qwifi, but be very careful about this as there is
+  required for the first boot, after that you can remove it. You can keep it and
+  share the internet via the Qwifi. **Be very careful about this as there is
   no encryption and anyone can connect!**
 - Connect power to the Pi and wait a minute or so for it to boot.
 - Connect via SSH to the Pi the password is default: `raspberry`:
