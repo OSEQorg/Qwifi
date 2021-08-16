@@ -5,12 +5,16 @@
 - Raspberry Pi 3B or newer
 - USB stick or SD card of 4GB or larger (USB3.0 stick is recommended)
 
+## Download the latest image
+
+Download the latest image from: https://github.com/Audiopedia/qwifi/releases
+
 ## Flash the image
 
 - Insert USB stick or SD card into your computer
 - Install [Raspberry Pi Imager](https://www.raspberrypi.org/software/)
 - Run the application
-- Choose OS > Use custom > Select the `qwifi.img` file
+- Choose OS > Use custom > Select the downloaded file (`qwifi_*.img.gz`) file
 - Choose storage > Select the USB stick or SD card
 - Write
 
