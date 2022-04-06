@@ -1,5 +1,11 @@
 # Qwifi
 
+## About
+
+Technology is revolutionizing the world by providing tools for entrepreneurship, access to education, as well as life-enhancing information. Yet women in developing countries increasingly have limited access to technology, resulting in a digital gender divide. Women face a variety of barriers to mobile access, with data costs and illiteracy topping the list. Even if a woman has a device, she may not be able to use it to its full potential. 
+
+Qwifi can solve this problem. It’s a simple, accessible and cheap technology that can provide free audiovisual content to marginalized populations. Qwifi can be used in any scenario where information and knowledge transfer is required and where parts of the target audience have access to smartphones. Qwifi serves the content by creating a local Wifi network, without the need of any internet connection and independently from the electric grid. 
+
 ## Requirements
 
 - Raspberry Pi 3B or newer
