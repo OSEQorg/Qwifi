@@ -8,12 +8,12 @@
 
 ## Download and flash image
 
-- Download a Raspbian image and flash it to a USB stick
+- [Download a Raspberry Pi OS *Lite* image](https://www.raspberrypi.com/software/operating-systems/) and flash it to a USB stick
 - Mount the boot partition, and create an empty file named `ssh` on it.
 
 ### Disable resize-on-first-boot
 
-Raspbian resizes the root partition to fit the entire medium on the first
+Raspberry Pi OS resizes the root partition to fit the entire medium on the first
 boot. We don't want that now, because the image needs to be as small as
 possible. We'll resize the root partition by hand on the first boot. Resize on
 first boot will be setup again when the image build is finished.
