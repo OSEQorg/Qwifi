@@ -43,6 +43,28 @@
         };
       };
 
+      hardware.deviceTree = {
+        filter = "*rpi*.dtb";
+        # Stop polling the SD card when booted over USB.
+        # dtparam=sd_poll_once=on
+        overlays = [{
+          name = "sd_poll_once";
+          dtsText = ''
+            /dts-v1/;
+            /plugin/;
+            / {
+              compatible = "brcm,bcm";
+              fragment@0 {
+                target = <&sdhost>;
+                __overlay__ {
+                  non-removable;
+                };
+              };
+            };
+          '';
+        }];
+      };
+
       # Include firmwares for WiFi.
       hardware.enableRedistributableFirmware = true;
 
