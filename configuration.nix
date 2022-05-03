@@ -33,6 +33,8 @@ in {
     allowed-users = [ "root" "@wheel" ];
   };
 
+  environment.systemPackages = [ pkgs.git ];
+
   services.openssh = {
     enable = true;
     passwordAuthentication = true;

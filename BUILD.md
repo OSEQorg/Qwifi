@@ -9,7 +9,18 @@
 ## Download and flash image
 
 - [Download a Raspberry Pi OS *Lite* image](https://www.raspberrypi.com/software/operating-systems/) and flash it to a USB stick
-- Mount the boot partition, and create an empty file named `ssh` on it.
+- Mount the boot partition,
+- create an empty file named `ssh` on it,
+- and create an file named `userconf` and fill it with:
+  ```
+  pi:$6$wcsn7Ynj4Qakqqng$OZEIR.lEzwrapu.Qyj2pdR9dX22sr4LffS4HS6NXIpiF9CtXZAGsoRoo.EflBMIiUbz.yIvQFNtZPsk3x8jrw1
+  ```
+
+  or you can set a different password with:
+
+  ```bash
+  echo "pi:$(echo 'raspberry' | openssl passwd -6 -stdin)" > /run/media/jos/boot/userconf
+  ```
 
 ### Disable resize-on-first-boot
 

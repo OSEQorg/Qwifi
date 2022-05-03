@@ -1,7 +1,6 @@
 { pkgs, lib, config, ... }: {
   config = lib.mkIf
     (builtins.elem config.qwifi.hardware [ "raspberryPi3" "raspberryPi4" ]) {
-      boot.tmpOnTmpfs = true;
       boot.kernelPackages = {
         raspberryPi3 = pkgs.linuxPackages_rpi3;
         raspberryPi4 = pkgs.linuxPackages_rpi4;
@@ -44,7 +43,21 @@
         };
       };
 
-      hardware.firmware =
-        [ pkgs.wireless-regdb pkgs.raspberrypiWirelessFirmware ];
+      # Include firmwares for WiFi.
+      hardware.enableRedistributableFirmware = true;
+
+      # Swap and ZRAM are needed for rebuilding NixOS on device.
+      swapDevices = [{
+        device = "/swapfile";
+        size = 1024;
+      }];
+
+      zramSwap = {
+        enable = true;
+        algorithm = "zstd";
+      };
+
+      # tmpfs is too small for rebuilding NixOS.
+      boot.tmpOnTmpfs = false;
     };
 }
