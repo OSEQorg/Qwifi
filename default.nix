@@ -1,4 +1,4 @@
-{ nixpkgs ? <nixpkgs>, self ? null, system, modules ? [ ], ... }:
+{ nixpkgs ? <nixpkgs>, self ? null, system, modules ? [ ], inputs, ... }:
 
 let pkgs = import nixpkgs { inherit system; };
 in import (pkgs.path + /nixos/lib/eval-config.nix) ({
@@ -11,9 +11,7 @@ in import (pkgs.path + /nixos/lib/eval-config.nix) ({
           if isNull self then "${nixpkgs}/nixos/modules" else self.modulesPath;
       };
     }
-    {
-      nix.nixPath = [ "nixpkgs=${nixpkgs}" ];
-    }
+    { nix.nixPath = [ "nixpkgs=${nixpkgs}" ]; }
   ] ++ (pkgs.lib.optional ((isNull self) == false) {
     system.nixos.versionSuffix = ".${
         pkgs.lib.substring 0 8
@@ -22,4 +20,5 @@ in import (pkgs.path + /nixos/lib/eval-config.nix) ({
     system.nixos.revision = pkgs.lib.mkIf (self ? rev) self.rev;
   });
 
+  specialArgs = { inherit inputs; };
 })

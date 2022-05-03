@@ -10,6 +10,11 @@ nix build .#images.qwifi -L
 sudo dd if=result/sd-image/qwifi-... of=/dev/sdX status=progress
 ```
 
+- Boot up a raspberry pi with the flashed image (either via USB or SD-card).
+- Have the Pi connected to your local network via the Ethernet port.
+- SSH to the Pi with `ssh qwifi@qwifi` the initial password is `qwifi`.
+- Change the default password: `passwd`
+
 ## Live updating
 
 ```bash

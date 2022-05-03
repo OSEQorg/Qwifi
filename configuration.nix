@@ -4,12 +4,13 @@ let
   cfg = config.qwifi;
   fqdn = hostName: "${hostName}.${cfg.domain}";
 
+  network = "192.168.4.0";
   ip = "192.168.4.1";
   prefixLength = 24;
   dhcpStart = "192.168.4.10";
   dhcpEnd = "192.168.4.254";
 in {
-  imports = [ ./custom.nix ./qwifi.nix ./hardware/raspberrypi.nix ];
+  imports = [ ./custom.nix ./qwifi.nix ./raspberrypi.nix ];
 
   networking = {
     hostName = cfg.hostName;
@@ -42,13 +43,13 @@ in {
     allowedUDPPorts = [ 53 67 ]; # DNS & DHCP.
     allowedTCPPorts = [ 22 80 ]; # SSH and HTTP.
     extraCommands = ''
-      iptables -t nat -A POSTROUTING -s 192.168.4.0/24 -o eth0 -j MASQUERADE
+      iptables -t nat -A POSTROUTING -s ${network}/${toString prefixLength} -o eth0 -j MASQUERADE
     '';
   };
 
   networking.interfaces."wlan0".ipv4.addresses = [{
-    address = "192.168.4.1";
-    prefixLength = 24;
+    address = ip;
+    inherit prefixLength;
   }];
 
   # Increase entropy for hostapd.
