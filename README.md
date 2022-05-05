@@ -13,7 +13,7 @@ Qwifi can solve this problem. It’s a simple, accessible and cheap technology t
 
 ## Download the latest image
 
-Download the latest image from: https://github.com/Audiopedia/qwifi/releases
+Download the latest image from: https://github.com/OSEQorg/qwifi/releases
 
 ## Flash the image
 
