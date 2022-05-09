@@ -28,6 +28,10 @@
 
         uboot.enable = true;
         uboot.configurationLimit = 5;
+
+        firmwareConfig = ''
+          program_usb_boot_mode=1
+        '';
       };
 
       fileSystems = {
@@ -45,24 +49,44 @@
 
       hardware.deviceTree = {
         filter = "*rpi*.dtb";
-        # Stop polling the SD card when booted over USB.
-        # dtparam=sd_poll_once=on
-        overlays = [{
-          name = "sd_poll_once";
-          dtsText = ''
-            /dts-v1/;
-            /plugin/;
-            / {
-              compatible = "brcm,bcm";
-              fragment@0 {
-                target = <&sdhost>;
-                __overlay__ {
-                  non-removable;
+        overlays = [
+          # Stop polling the SD card when booted over USB.
+          # dtparam=sd_poll_once=on
+          {
+            name = "sd_poll_once";
+            dtsText = ''
+              /dts-v1/;
+              /plugin/;
+              / {
+                compatible = "brcm,bcm";
+                fragment@0 {
+                  target = <&sdhost>;
+                  __overlay__ {
+                    non-removable;
+                  };
                 };
               };
-            };
-          '';
-        }];
+            '';
+          }
+          # Enable the watchdog.
+          # dtparam=watchdog=on
+          {
+            name = "watchdog";
+            dtsText = ''
+              /dts-v1/;
+              /plugin/;
+              / {
+                compatible = "brcm,bcm";
+                fragment@0 {
+                  target = <&watchdog>;
+                  __overlay__ {
+                    status = "okay";
+                  };
+                };
+              };
+            '';
+          }
+        ];
       };
 
       # Include firmwares for WiFi.
@@ -81,5 +105,11 @@
 
       # tmpfs is too small for rebuilding NixOS.
       boot.tmpOnTmpfs = false;
+
+      systemd.watchdog = {
+        device = "/dev/watchdog";
+        runtimeTime = "30s"; # Reboots if no ping has been received for 30s.
+        rebootTime = "10m"; # Force reboot if shutdown hangs after 10m.
+      };
     };
 }
