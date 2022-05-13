@@ -164,6 +164,44 @@ connected to the same LAN as your workstation. This command will live update:
 export NIX_SSHOPTS="-t" nixos-rebuild --flake '.#ghana-raspberryPi3-NL' switch --target-host qwifi --build-host localhost --use-remote-sudo -L
 ```
 
+### Adding new content
+
+First make sure that the static content you want to host on the Qwifi is on
+GitHub (or any other publicly accessible git host).
+
+Open `flake.nix` and add the git repository to the `inputs`, for example:
+
+```diff
+ inputs = {
+   nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+   # ...
++  foo = {
++    url = "github:org/foo/main";  # <-- format is: $owner/$repo/$branch
++    flake = false;
++  };
+ };
+```
+
+Now you can reference this new `input` in the `nixosConfigurations` section, for example:
+
+```nix
+      nixosConfigurations = builtins.listToAttrs (builtins.concatLists [
+        # ...
+        ++ (mkImages {
+          imageName = "foo";
+          countries = [ "NL" "DE" "GH" ]; # <-- change this to countries Pi will be in.
+          sites.foo = inputs.foo;   # <-- domain "foo.lan" refers to the static content in input.
+          # sites.bar = inputs.bar; # <-- optionally you can add multiple sites.
+        })
+      ])
+```
+
+Build an image:
+
+```bash
+nix build .#images.foo-raspberryPi3-NL
+```
+
 ## Credits
 
 These sources greatly helped in building Qwifi on Nix:

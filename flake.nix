@@ -47,5 +47,10 @@
         (cfg.extendModules {
           modules = [ ./sd-image.nix ];
         }).config.system.build.sdImage) nixosConfigurations;
+
+      allImages = pkgs.buildEnv {
+        name = "images";
+        paths = map (p: "${p}/sd-image") (pkgs.lib.attrValues images);
+      };
     };
 }
