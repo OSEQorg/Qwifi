@@ -28,7 +28,7 @@
       nixosConfigurations = builtins.listToAttrs (builtins.concatLists [
         # Ghana.
         (map ({ hardware, countryCode }: {
-          name = "ghana-${hardware}-${pkgs.lib.toLower countryCode}";
+          name = "ghana-${hardware}-${countryCode}";
           value = qwifiSystem {
             inherit hardware;
             inherit countryCode;
