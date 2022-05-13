@@ -1,0 +1,45 @@
+{
+  "nodes": {
+    "ghana": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1651578170,
+        "narHash": "sha256-KZYdAcF5wjj6ChwFbLTuLjYIuh3UeCKcdiP7x9t7erg=",
+        "owner": "OSEQorg",
+        "repo": "Asanta-Twi-Audio-App",
+        "rev": "ad9c8fe570e87dc92124e188201de476b88c3f95",
+        "type": "github"
+      },
+      "original": {
+        "owner": "OSEQorg",
+        "ref": "main",
+        "repo": "Asanta-Twi-Audio-App",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1651007983,
+        "narHash": "sha256-GNay7yDPtLcRcKCNHldug85AhAvBpTtPEJWSSDYBw8U=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e10da1c7f542515b609f8dfbcf788f3d85b14936",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "ghana": "ghana",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
