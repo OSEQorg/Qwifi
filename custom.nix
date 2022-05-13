@@ -13,16 +13,16 @@
     };
 
     hardware = lib.mkOption {
-      type = lib.types.str;
+      type = lib.types.enum [ "raspberryPi3" "raspberryPi4" ];
       description = ''
-        Hardware type, one of:
-
-        - raspberryPi3
-        - raspberryPi4
+        Hardware type
       '';
     };
 
-    ssid = lib.mkOption { type = lib.types.str; };
+    ssid = lib.mkOption {
+      type = lib.types.str;
+      default = "qwifi";
+    };
 
     countryCode = lib.mkOption {
       type = lib.types.str;

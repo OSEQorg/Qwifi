@@ -10,7 +10,7 @@ let
   dhcpStart = "192.168.4.10";
   dhcpEnd = "192.168.4.254";
 in {
-  imports = [ ./custom.nix ./qwifi.nix ./raspberrypi.nix ];
+  imports = [ ./custom.nix ./raspberrypi.nix ];
 
   networking = {
     hostName = cfg.hostName;

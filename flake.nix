@@ -11,21 +11,38 @@
 
   outputs = inputs@{ self, nixpkgs, ... }:
     let
-      qwifiSystem = args:
-        import ./default.nix (args // {
+      qwifiSystem = params:
+        import ./default.nix {
+          system = "aarch64-linux";
           inherit inputs;
           inherit (inputs) nixpkgs self;
-          modules = (args.modules or [ ]) ++ [
+          modules = [
             { config._module.args = { inherit (self) modulesPath; }; }
             { nix.registry = { nixpkgs = { flake = nixpkgs; }; }; }
+            { qwifi = params; }
           ];
-        });
-    in {
-      nixosConfigurations.qwifi = qwifiSystem { system = "aarch64-linux"; };
+        };
 
-      images.qwifi = (qwifiSystem {
-        system = "aarch64-linux";
-        modules = [ ./sd-image.nix ];
-      }).config.system.build.sdImage;
+      pkgs = import nixpkgs { system = "x86_64-linux"; };
+    in rec {
+      nixosConfigurations = builtins.listToAttrs (builtins.concatLists [
+        # Ghana.
+        (map ({ hardware, countryCode }: {
+          name = "ghana-${hardware}-${pkgs.lib.toLower countryCode}";
+          value = qwifiSystem {
+            inherit hardware;
+            inherit countryCode;
+            sites.ghana = inputs.ghana;
+          };
+        }) (pkgs.lib.cartesianProductOfSets {
+          hardware = [ "raspberryPi3" "raspberryPi4" ];
+          countryCode = [ "NL" "DE" "GH" ];
+        }))
+      ]);
+
+      images = builtins.mapAttrs (_: cfg:
+        (cfg.extendModules {
+          modules = [ ./sd-image.nix ];
+        }).config.system.build.sdImage) nixosConfigurations;
     };
 }
