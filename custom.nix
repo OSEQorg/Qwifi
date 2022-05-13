@@ -1,6 +1,11 @@
 { pkgs, lib, config, ... }: {
 
   options.qwifi = {
+    imageName = lib.mkOption {
+      type = lib.types.str;
+      description = "Name of the image";
+    };
+
     hostName = lib.mkOption {
       type = lib.types.str;
       default = "qwifi";

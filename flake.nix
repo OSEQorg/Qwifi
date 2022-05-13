@@ -24,20 +24,23 @@
         };
 
       pkgs = import nixpkgs { system = "x86_64-linux"; };
+
+      mkImages = { imageName, countries, sites }:
+        (map ({ hardware, countryCode }: {
+          name = "${imageName}-${hardware}-${countryCode}";
+          value = qwifiSystem { inherit hardware countryCode imageName sites; };
+        }) (pkgs.lib.cartesianProductOfSets {
+          hardware = [ "raspberryPi3" "raspberryPi4" ];
+          countryCode = countries;
+        }));
     in rec {
       nixosConfigurations = builtins.listToAttrs (builtins.concatLists [
         # Ghana.
-        (map ({ hardware, countryCode }: {
-          name = "ghana-${hardware}-${countryCode}";
-          value = qwifiSystem {
-            inherit hardware;
-            inherit countryCode;
-            sites.ghana = inputs.ghana;
-          };
-        }) (pkgs.lib.cartesianProductOfSets {
-          hardware = [ "raspberryPi3" "raspberryPi4" ];
-          countryCode = [ "NL" "DE" "GH" ];
-        }))
+        (mkImages {
+          imageName = "ghana";
+          countries = [ "NL" "DE" "GH" ];
+          sites.ghana = inputs.ghana;
+        })
       ]);
 
       images = builtins.mapAttrs (_: cfg:
